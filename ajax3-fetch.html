@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Implementação de AJAX com Fetch (Promises)</title>
+</head>
+<body>
+    <h1>Exemplo de AJAX com Fetch e Promises</h1>
+    <button onclick="carregarConteudo()">Carregar Conteúdo</button>
+    <div id="resultado" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+        Aguardando carregamento...
+    </div>
+
+    <script>
+        function carregarConteudo() {
+            const url = 'dados.txt';
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = 'Carregando...';
+
+            // INÍCIO DA MEDIÇÃO
+            const inicio = performance.now(); 
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // FIM DA MEDIÇÃO
+                    const fim = performance.now();
+                    const tempoTotal = (fim - inicio).toFixed(2); 
+
+                    resultadoDiv.innerHTML = `
+                        Conteúdo Carregado (Fetch + Promises):<br>
+                        Tempo de Requisição: **${tempoTotal} ms**<br>
+                        <pre>${data}</pre>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Falha ao carregar o conteúdo:', error);
+                    resultadoDiv.innerHTML = `ERRO: ${error.message}`;
+                });
+        }
+    </script>
+</body>
+</html>
