@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Implementação de AJAX com Fetch e async/await</title>
+</head>
+<body>
+    <h1>Exemplo de AJAX com Fetch e async/await</h1>
+    <button onclick="carregarConteudo()">Carregar Conteúdo</button>
+    <div id="resultado" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+        Aguardando carregamento...
+    </div>
+
+    <script>
+        async function carregarConteudo() {
+            const url = 'dados.txt';
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = 'Carregando...';
+
+            // INÍCIO DA MEDIÇÃO
+            const inicio = performance.now(); 
+
+            try {
+                // await: Pausa até que a requisição fetch retorne
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
+
+                // await: Pausa até que o corpo da resposta seja lido
+                const data = await response.text();
+                
+                // FIM DA MEDIÇÃO
+                const fim = performance.now();
+                const tempoTotal = (fim - inicio).toFixed(2); 
+
+                // Sucesso: Exibe o conteúdo e o tempo
+                resultadoDiv.innerHTML = `
+                    Conteúdo Carregado (Fetch + async/await):<br>
+                    Tempo de Requisição: **${tempoTotal} ms**<br>
+                    <pre>${data}</pre>
+                `;
+
+            } catch (error) {
+                // Tratamento de Erro
+                console.error('Falha ao carregar o conteúdo:', error);
+                resultadoDiv.innerHTML = `ERRO: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
