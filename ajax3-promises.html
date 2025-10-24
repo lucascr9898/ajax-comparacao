@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Implementação de AJAX com XHR encapsulado em Promises</title>
+</head>
+<body>
+    <h1>Exemplo de AJAX com XHR + Promises</h1>
+    <button onclick="carregarConteudo()">Carregar Conteúdo</button>
+    <div id="resultado" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+        Aguardando carregamento...
+    </div>
+
+    <script>
+        // Função que retorna uma Promise, encapsulando o XHR
+        function makeRequest(method, url, inicio) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open(method, url);
+
+                xhr.onload = function() {
+                    // FIM DA MEDIÇÃO - Ocorre dentro do onload do XHR
+                    const fim = performance.now();
+                    const tempoTotal = (fim - inicio).toFixed(2);
+
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        // Resolve a Promise com o texto e o tempo
+                        resolve({ data: xhr.responseText, tempo: tempoTotal });
+                    } else {
+                        reject(new Error(`Erro HTTP no XHR. Status: ${xhr.status} ${xhr.statusText}`));
+                    }
+                };
+
+                xhr.onerror = function() {
+                    reject(new Error('Erro de rede ou XHR falhou.'));
+                };
+
+                xhr.send();
+            });
+        }
+
+        function carregarConteudo() {
+            const url = 'dados.txt';
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = 'Carregando (XHR com Promise)...';
+            
+            // INÍCIO DA MEDIÇÃO
+            const inicio = performance.now(); 
+
+            // Passa o tempo de início para a função makeRequest
+            makeRequest('GET', url, inicio)
+                .then(result => {
+                    // Exibe o conteúdo e o tempo
+                    resultadoDiv.innerHTML = `
+                        Conteúdo Carregado (XHR + Promises):<br>
+                        Tempo de Requisição: **${result.tempo} ms**<br>
+                        <pre>${result.data}</pre>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Falha ao carregar o conteúdo:', error);
+                    resultadoDiv.innerHTML = `ERRO: ${error.message}`;
+                });
+        }
+    </script>
+</body>
+</html>
