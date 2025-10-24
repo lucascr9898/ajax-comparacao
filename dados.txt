@@ -1,2 +1,4 @@
-Este é o conteúdo de teste carregado pelo AJAX.
-A requisição foi concluída com sucesso.
+Método,Facilidade de Uso (1 a 5 - 5 sendo mais fácil),Desempenho (Tempo Médio de Resposta),Vantagens em Cenários Complexos
+XHR (Antigo),1,7.50 ms, Bom para tarefas muito específicas, como monitorar o progresso de um upload.
+fetch + Promises,3,7.15 ms.  Ideal para requisições rápidas e sequenciais.
+fetch + async/await,5,6.90 ms.  Perfeito para códigos complexos, pois é muito mais fácil de ler e depurar.
