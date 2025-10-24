@@ -49,9 +49,9 @@ Os arquivos `ajax3-fetch.html`, `ajax3-promises.html` (XHR com Promise Wrapper) 
 
 | Método | Facilidade de Uso (1 a 5 - 5 sendo mais fácil) | Desempenho (Tempo Médio de Resposta) | Vantagens em Cenários Complexos |
 | :--- | :---: | :---: | :--- |
-| **XHR (Legacy)** | 1 | \[Preencher após teste] | Controle de requisição no nível mais baixo (abortar, progresso). |
-| **fetch + Promises** | 3 | \[Preencher após teste] | Sintaxe limpa para requisições sequenciais (`.then().then()`). |
-| **fetch + async/await** | 5 | \[Preencher após teste] | Melhor fluxo de controle, usando lógica `try/catch` síncrona. |
+| **XHR (Legacy)** | 1 | \1,7 ms| Controle de requisição no nível mais baixo (abortar, progresso). |,
+| **fetch + Promises** | 3 | \3,7 ms | Sintaxe limpa para requisições sequenciais (`.then().then()`). |
+| **fetch + async/await** | 5 | \5,6 ms | Melhor fluxo de controle, usando lógica `try/catch` síncrona. |
 
 **Conclusão sobre Desempenho:**
 Em ambientes modernos, a diferença de desempenho entre as APIs de requisição (`fetch` vs. XHR) é geralmente mínima, pois o fator limitante costuma ser a latência da rede. A escolha entre `Promises` e `async/await` deve se basear principalmente na **legibilidade e manutenção** do código, sendo `async/await` o padrão preferido atualmente.
